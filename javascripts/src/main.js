@@ -6,7 +6,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h2>Validation Test</h2>
         <Form />
       </div>
     )
@@ -38,28 +37,22 @@ class Form extends Component {
           label="Age"
           name="age"
           parentHandler={this._fetchValueFromInput.bind(this)}
-          rule="number" />
+          rule={["number", "required"]} />
       </form>
     )
   }
 
   _onSubmitHandler(e) {
     e.preventDefault();
-    console.log("the form has been submitted", this.state.inputValues);
     // no op
-  }
 
+  }
   _fetchValueFromInput(key, value, isValid) {
-    // console.log("Key set by input state:", key)
-    // console.log("Value set by input state:", value)
-    console.log("is input valid from parent", isValid)
     if (isValid) {
       this.setState({ isFormValid: true })
     }
     this.state.inputValues[key] = value;
 
-    console.log("state", this.state.inputValues)
-    // console.log("is form valid?", this.state.isFormValid)
   }
 
   _validateForm() {
@@ -74,7 +67,7 @@ class Input extends Component {
     this.state = {
       value: "",
       isInputValid: false,
-      errorMessage: ""
+      errorMessage: []
     }
   }
 
@@ -106,20 +99,30 @@ class Input extends Component {
   _validateInput(value, rule) {
     var validator = inputsValidator(value, rule)
     if (this.props.rule && validator.result) {
-      console.log("obj", validator)
       this.setState({ isInputValid: true, value: value, errorMessage: validator.error });
       this.props.parentHandler(this.props.name, value, true);
 
     } else if (this.props.rule && !validator.result) {
-      console.log("error", validator.error)
-      console.log("obj", validator)
-      this.setState({ isInputValid: false, value: value, errorMessage: validator.error });
+      if (Array.isArray(validator)) {
+        this.setState({ isInputValid: false, value: value});
+        validator.forEach(response => {
+          console.log("RESPONSE", response.error);
+          if (response.error) {
+            this.setState({ errorMessage: response.error });
+          }
+        }.bind(this))
+      } else {
+        this.setState({ isInputValid: false, value: value, errorMessage: validator.error });
+      }
+
       this.props.parentHandler(this.props.name, value, false);
 
     } else { // if there are no rules present then it will always be true
+      console.log("validator result", validator.result);
       this.setState({ isInputValid: true, value: value });
       this.props.parentHandler(this.props.name, value, true);
     }
+
   }
 }
 

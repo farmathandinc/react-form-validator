@@ -5,12 +5,12 @@ import validator, {
   isInt
 } from "validator"
 
-function validationTruthChecker(method, rule) {
+function validationTruthChecker(method, rules) {
   var result = method === false ? false : true;
   var error = null;
 
   if (result === false) {
-    switch(rule) {
+    switch(rules) {
       case "required":
         error = "You cannot leave this blank";
         return {result, error};
@@ -29,22 +29,45 @@ function validationTruthChecker(method, rule) {
   }
 }
 
-export function inputsValidator(value, rule) {
-  switch(rule) {
-    case "required":
-      return validationTruthChecker(!isNull(value), rule)
-    break;
+export function inputsValidator(value, rules) {
 
-    case "number":
-      return validationTruthChecker(isNumeric(value), rule)
-    break;
+  var defaults = { result: true, error: null };
 
-    case "percentage":
-      return validationTruthChecker(isInt(value, { min: 0, max:100 }), rule)
-    break;
+  if (Array.isArray(rules)) {
+    return rules.map(rule => {
+      switch(rule) {
+        case "required":
+          return validationTruthChecker(!isNull(value), rule);
+        break;
 
-    default:
-      return "valid"
+        case "number":
+          return validationTruthChecker(isNumeric(value), rule);
+        break;
 
+        case "percentage":
+          return validationTruthChecker(isInt(value, { min: 0, max:100 }), rule);
+        break;
+
+        default:
+          return defaults;
+      }
+    })
+  } else if (typeof rules === "string") {
+    switch(rules) {
+      case "required":
+        return validationTruthChecker(!isNull(value), rules)
+      break;
+
+      case "number":
+        return validationTruthChecker(isNumeric(value), rules)
+      break;
+
+      case "percentage":
+        return validationTruthChecker(isInt(value, { min: 0, max:100 }), rules)
+      break;
+
+      default:
+        return "valid"
+    }
   }
 }
