@@ -29,6 +29,25 @@ function validationTruthChecker(method, rules) {
   }
 }
 
+function ruleChecker(value, rule) {
+  switch(rule) {
+    case "required":
+      return validationTruthChecker(!isNull(value), rule);
+    break;
+
+    case "number":
+      return validationTruthChecker(isNumeric(value), rule);
+    break;
+
+    case "percentage":
+      return validationTruthChecker(isInt(value, { min: 0, max:100 }), rule);
+    break;
+
+    default:
+      return defaults;
+  }
+}
+
 export function inputsValidator(value, rules) {
 
   var defaults = { result: true, error: null };
@@ -67,7 +86,7 @@ export function inputsValidator(value, rules) {
       break;
 
       default:
-        return "valid"
+        return defaults
     }
   }
 }

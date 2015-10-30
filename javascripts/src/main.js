@@ -103,16 +103,18 @@ class Input extends Component {
       this.props.parentHandler(this.props.name, value, true);
 
     } else if (this.props.rule && !validator.result) {
+
+      this.setState({ isInputValid: false, value: value});
+
       if (Array.isArray(validator)) {
-        this.setState({ isInputValid: false, value: value});
         validator.forEach(response => {
-          console.log("RESPONSE", response.error);
           if (response.error) {
             this.setState({ errorMessage: response.error });
           }
         }.bind(this))
+
       } else {
-        this.setState({ isInputValid: false, value: value, errorMessage: validator.error });
+        this.setState({ errorMessage: validator.error });
       }
 
       this.props.parentHandler(this.props.name, value, false);
