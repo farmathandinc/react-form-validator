@@ -1,0 +1,13 @@
+body {
+  font-size: 14px;
+  font-family: helvetica;
+}
+
+label {
+  display: block;
+}
+
+input[type=text] {
+  margin-top: 5px;
+  display: block;
+}
