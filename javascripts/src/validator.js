@@ -7,7 +7,7 @@ import validator, {
 
 function validationTruthChecker(method, rules) {
   var result = method === false ? false : true;
-  var error = null;
+  var error = "";
 
   if (result === false) {
     switch(rules) {
@@ -40,7 +40,7 @@ function ruleChecker(value, rule) {
     break;
 
     case "percentage":
-      return validationTruthChecker(isInt(value, { min: 0, max:100 }), rule);
+      return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rule);
     break;
 
     default:
@@ -50,7 +50,7 @@ function ruleChecker(value, rule) {
 
 export function inputsValidator(value, rules) {
 
-  var defaults = { result: true, error: null };
+  var defaults = { result: true, error: "" };
 
   if (Array.isArray(rules)) {
     return rules.map(rule => {
@@ -64,7 +64,7 @@ export function inputsValidator(value, rules) {
         break;
 
         case "percentage":
-          return validationTruthChecker(isInt(value, { min: 0, max:100 }), rule);
+          return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rule);
         break;
 
         default:
@@ -82,7 +82,7 @@ export function inputsValidator(value, rules) {
       break;
 
       case "percentage":
-        return validationTruthChecker(isInt(value, { min: 0, max:100 }), rules)
+        return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rules)
       break;
 
       default:
