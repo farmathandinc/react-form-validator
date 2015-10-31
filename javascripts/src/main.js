@@ -23,7 +23,6 @@ class Form extends Component {
   }
 
   render() {
-    console.log("is form valid", this.state.isFormValid);
     return (
       <form onSubmit={this._onSubmitHandler.bind(this)}>
         <Input
@@ -40,6 +39,7 @@ class Form extends Component {
           name="age"
           parentHandler={this._fetchValueFromInput.bind(this)}
           rule={["number", "required"]} />
+        <button type="submit" style={{ display: "block" }} disabled={!this.state.isFormValid}>Submit</button>
       </form>
     )
   }
@@ -52,6 +52,8 @@ class Form extends Component {
   _fetchValueFromInput(key, value, isValid) {
     if (isValid) {
       this.setState({ isFormValid: true })
+    } else {
+      this.setState({ isFormValid: false })
     }
     this.state.inputValues[key] = value;
 
@@ -81,7 +83,6 @@ class Input extends Component {
   }
 
   render() {
-    //console.log("error state messages", this.state.errorMessage);
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
@@ -100,16 +101,13 @@ class Input extends Component {
   }
 
   _renderErrorMessages() {
-    console.log("am i here");
     var errorMessageState = this.state.errorMessage;
 
     if (Array.isArray(errorMessageState)) {
-      console.log("array of errors", errorMessageState);
       return errorMessageState.map((message, index) => {
         return <span key={index} style={{ display: "block", color: "red" }}>{message}</span>
       })
     } else {
-      console.log("is it hitting here");
       return <span style={{ display: "block", color: "red" }}>{errorMessageState}</span>
     }
   }
@@ -117,6 +115,7 @@ class Input extends Component {
   _validateInput(value, rule) {
     var validator = inputsValidator(value, rule)
     if (this.props.rule && validator.result) {
+      console.log("this should be triggered");
       this.setState({ isInputValid: true, value: value, errorMessage: validator.error });
       this.props.parentHandler(this.props.name, value, true);
 
@@ -127,6 +126,7 @@ class Input extends Component {
       if (Array.isArray(validator)) {
 
         var errResponse = []; // mutable array that would collect the err messages
+        // console.log(validator);
 
         validator.forEach(response => {
           errResponse.push(response.error)
@@ -138,6 +138,9 @@ class Input extends Component {
       }
 
       this.props.parentHandler(this.props.name, value, false);
+
+    } else if (Array.isArray(validator)) {
+      console.log("THIS SHOULD BE HERE ONLY IF THERE IS AN ARRAY OF RULES");
 
     } else { // if there are no rules present then it will always be true
       this.setState({ isInputValid: true, value: value });
