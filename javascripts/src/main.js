@@ -220,7 +220,7 @@ class Input extends Component {
 
 
     } else { // if there are no rules present then it will always be true
-      this.setState({ isInputValid: true, value: value, checkMark: validCheckMark });
+      this.setState({ isInputValid: true, value: value, checkMark: value === "" ? null : validCheckMark });
       this.props.parentHandler(this.props.name, value, true);
     }
 
