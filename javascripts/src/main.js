@@ -37,24 +37,33 @@ class Form extends Component {
     return (
       <form onSubmit={this._onSubmitHandler.bind(this)}>
         <Input
-          label="Name"
+          label="Name*"
           name="name"
           parentHandler={this._fetchValueFromInput.bind(this)}
           rule="required" />
+
         <Input
           label="Email"
           name="email"
           parentHandler={this._fetchValueFromInput.bind(this)} />
+
         <Input
-          label="Age"
+          label="Age*"
           name="age"
           parentHandler={this._fetchValueFromInput.bind(this)}
           rule={["number", "required"]} />
 
+        <Input
+          label="Income"
+          name="income"
+          parentHandler={this._fetchValueFromInput.bind(this)}
+          rule="number" />
+
         <Select
           options={countryList}
-          label="Country"
+          label="Country*"
           name="country"
+          rule="required"
           parentHandler={this._fetchValueFromInput.bind(this)} />
         <button type="submit" style={{ display: "block" }} disabled={!this.state.isFormValid}>Submit</button>
       </form>

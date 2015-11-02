@@ -29,25 +29,6 @@ function errorHandler(method, rules) {
   }
 }
 
-function ruleChecker(value, rule) {
-  switch(rule) {
-    case "required":
-      return errorHandler(!isNull(value), rule);
-    break;
-
-    case "number":
-      return errorHandler(isNumeric(value), rule);
-    break;
-
-    case "percentage":
-      return errorHandler(isInt(value, { min: 0, max: 100 }), rule);
-    break;
-
-    default:
-      return defaults;
-  }
-}
-
 export function inputsValidator(value, rules) {
 
   var defaults = { result: true, error: null };
@@ -78,7 +59,11 @@ export function inputsValidator(value, rules) {
       break;
 
       case "number":
-        return errorHandler(isNumeric(value), rules)
+        if (value === "") {
+          return defaults;
+        } else {
+          return errorHandler(isNumeric(value), rules);
+        }
       break;
 
       case "percentage":
