@@ -1,14 +1,15 @@
 import React, {Component} from "react"
 import ReactDOM, {findDOMNode} from "react-dom"
+import _ from "underscore"
 
 import {inputsValidator} from "./validator"
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <main>
         <Form />
-      </div>
+      </main>
     )
   }
 }
@@ -18,6 +19,7 @@ class Form extends Component {
     super(props)
     this.state = {
       inputValues: {},
+      fieldValidity: {},
       isFormValid: false
     }
   }
@@ -49,18 +51,39 @@ class Form extends Component {
     // no op
 
   }
-  _fetchValueFromInput(key, value, isValid) {
-    if (isValid) {
-      this.setState({ isFormValid: true })
+
+  componentDidMount() {
+    var validate = this._validateForm(this.state.fieldValidity)
+    if (validate) {
+      this.setState({ isFormValid: true });
     } else {
-      this.setState({ isFormValid: false })
+      this.setState({ isFormValid: false });
     }
+  }
+
+  _fetchValueFromInput(key, value, isValid) {
+
+    this.state.fieldValidity[key] = isValid;
     this.state.inputValues[key] = value;
+
+    var validate = this._validateForm(this.state.fieldValidity)
+    if (validate) {
+      this.setState({ isFormValid: true });
+    } else {
+      this.setState({ isFormValid: false });
+    }
 
   }
 
-  _validateForm() {
+  _validateForm(formData) {
 
+    var values = _.values(formData);
+
+    if (_.contains(values, false)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }
@@ -77,9 +100,10 @@ class Input extends Component {
 
   componentDidMount() {
     if (!this.props.rule) {
-      this.setState({ isInputValid: true })
+      this.props.parentHandler(this.props.name, this.state.value, true);
+    } else {
+      this.props.parentHandler(this.props.name, this.state.value, this.state.isInputValid);
     }
-    this.props.parentHandler(this.props.name, this.state.value, this.state.isInputValid);
   }
 
   render() {
@@ -132,9 +156,10 @@ class Input extends Component {
         if (response.error) {
           errResponse.push(response.error)
           this.setState({ errorMessage: errResponse});
+        } else {
+          this.setState({ errorMessage: errResponse });
         }
       }.bind(this))
-      //console.log("Error Response from validator", errResponse);
 
       if (errResponse.length > 0) {
         this.props.parentHandler(this.props.name, value, false);
@@ -152,6 +177,22 @@ class Input extends Component {
       this.props.parentHandler(this.props.name, value, true);
     }
 
+  }
+}
+
+class Checkbox extends Input {
+  render() {
+    return (
+      <div className="input-container">
+        <label>{this.props.label}</label>
+        <input
+          name={this.props.name}
+          type="checkbox" />
+          //onChange={this._onChangeHandler.bind(this)}
+          //value={this.state.value} />
+        {this._renderErrorMessages()}
+      </div>
+    )
   }
 }
 

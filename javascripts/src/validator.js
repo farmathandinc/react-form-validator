@@ -5,7 +5,7 @@ import validator, {
   isInt
 } from "validator"
 
-function validationTruthChecker(method, rules) {
+function errorHandler(method, rules) {
   var result = method === false ? false : true;
   var error = null;
 
@@ -32,15 +32,15 @@ function validationTruthChecker(method, rules) {
 function ruleChecker(value, rule) {
   switch(rule) {
     case "required":
-      return validationTruthChecker(!isNull(value), rule);
+      return errorHandler(!isNull(value), rule);
     break;
 
     case "number":
-      return validationTruthChecker(isNumeric(value), rule);
+      return errorHandler(isNumeric(value), rule);
     break;
 
     case "percentage":
-      return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rule);
+      return errorHandler(isInt(value, { min: 0, max: 100 }), rule);
     break;
 
     default:
@@ -56,15 +56,15 @@ export function inputsValidator(value, rules) {
     return rules.map(rule => {
       switch(rule) {
         case "required":
-          return validationTruthChecker(!isNull(value), rule);
+          return errorHandler(!isNull(value), rule);
         break;
 
         case "number":
-          return validationTruthChecker(isNumeric(value), rule);
+          return errorHandler(isNumeric(value), rule);
         break;
 
         case "percentage":
-          return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rule);
+          return errorHandler(isInt(value, { min: 0, max: 100 }), rule);
         break;
 
         default:
@@ -74,15 +74,15 @@ export function inputsValidator(value, rules) {
   } else if (typeof rules === "string") {
     switch(rules) {
       case "required":
-        return validationTruthChecker(!isNull(value), rules)
+        return errorHandler(!isNull(value), rules)
       break;
 
       case "number":
-        return validationTruthChecker(isNumeric(value), rules)
+        return errorHandler(isNumeric(value), rules)
       break;
 
       case "percentage":
-        return validationTruthChecker(isInt(value, { min: 0, max: 100 }), rules)
+        return errorHandler(isInt(value, { min: 0, max: 100 }), rules)
       break;
 
       default:
