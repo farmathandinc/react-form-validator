@@ -65,7 +65,9 @@ class Form extends Component {
           name="country"
           rule="required"
           parentHandler={this._fetchValueFromInput.bind(this)} />
-        <button type="submit" style={{ display: "block" }} disabled={!this.state.isFormValid}>Submit</button>
+
+        <button type="submit" style={{ display: "block", marginTop: "20px" }} disabled={!this.state.isFormValid}>Submit</button>
+        <em>{this.state.isFormValid ? "" : "Make sure you filled in the required fields"}</em>
       </form>
     )
   }
@@ -73,7 +75,6 @@ class Form extends Component {
   _onSubmitHandler(e) {
     e.preventDefault();
     // no op
-
   }
 
   _fetchValueFromInput(key, value, isValid) {
@@ -114,7 +115,10 @@ class Input extends Component {
   }
 
   componentDidMount() {
+    this.setState({ value: this.state.value });
     if (!this.props.rule) {
+      this.props.parentHandler(this.props.name, this.state.value, true);
+    } else if (this.props.rule !== "required") {
       this.props.parentHandler(this.props.name, this.state.value, true);
     } else {
       this.props.parentHandler(this.props.name, this.state.value, this.state.isInputValid);

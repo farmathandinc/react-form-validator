@@ -21,7 +21,7 @@ function errorHandler(method, rules) {
         error = "Insert number between 0 and 100";
         return {result, error};
       default:
-        error = ""
+        error = null
         return {result, error};
     }
   } else {
@@ -67,7 +67,11 @@ export function inputsValidator(value, rules) {
       break;
 
       case "percentage":
-        return errorHandler(isInt(value, { min: 0, max: 100 }), rules)
+        if (value === "") {
+          return defaults;
+        } else {
+          return errorHandler(isInt(value, { min: 0, max: 100 }), rules)
+        }
       break;
 
       default:
