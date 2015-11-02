@@ -11,16 +11,16 @@ label {
   display: block;
 }
 
-.input-container input[type=text],
-.input-container select {
+.input-inner-container input[type=text],
+.input-inner-container select {
   margin-top: 5px;
   display: inline-block;
 }
 
-.input-container .check-mark {
+.input-inner-container .check-mark {
   margin-left: 5px;
   display: inline-block;
-  color: #7FFA81;
+  color: #29CF71;
 }
 
 

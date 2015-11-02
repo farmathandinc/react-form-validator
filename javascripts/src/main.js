@@ -144,7 +144,7 @@ class Input extends Component {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
-        <div className="input-container">
+        <div className="input-inner-container">
           <input
             name={this.props.name}
             type="text"
@@ -232,7 +232,7 @@ class Select extends Input {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
-        <div className="input-container">
+        <div className="input-inner-container">
           <select
             name={this.props.name}
             value={this.state.value}
@@ -254,6 +254,7 @@ class Select extends Input {
     )
   }
 }
+
 
 const mountNode = document.getElementById("app");
 
