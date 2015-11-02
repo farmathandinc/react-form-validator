@@ -7,7 +7,19 @@ label {
   display: block;
 }
 
-input[type=text] {
-  margin-top: 5px;
+.input-container {
   display: block;
 }
+
+.input-container input[type=text] {
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.input-container .check-mark {
+  margin-left: 5px;
+  display: inline-block;
+  color: #7FFA81;
+}
+
+

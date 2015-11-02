@@ -10,7 +10,21 @@ class App extends Component {
       <main>
         <h1>Example 1</h1>
         <Form />
+        <FormWithEnabledSubmit />
       </main>
+    )
+  }
+}
+
+class FormWithEnabledSubmit extends Component {
+  render() {
+    return(
+      <form style={{ marginTop: "30px" }}>
+        <h1>
+          Example 2
+          <small style={{ display: "block" }}>(validate on submit)</small>
+        </h1>
+      </form>
     )
   }
 }
@@ -110,7 +124,8 @@ class Input extends Component {
     this.state = {
       value: "",
       isInputValid: false,
-      errorMessage: []
+      errorMessage: [],
+      checkMark: null
     }
   }
 
@@ -129,11 +144,15 @@ class Input extends Component {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
-        <input
-          name={this.props.name}
-          type="text"
-          onChange={this._onChangeHandler.bind(this)}
-          value={this.state.value} />
+        <div className="input-container">
+          <input
+            name={this.props.name}
+            type="text"
+            onChange={this._onChangeHandler.bind(this)}
+            value={this.state.value} />
+
+            {this.state.checkMark}
+        </div>
         {this._renderErrorMessages()}
       </div>
     )
@@ -157,9 +176,15 @@ class Input extends Component {
 
   _validateInput(value, rule) {
     var validator = inputsValidator(value, rule)
+    var validCheckMark = <i className="check-mark fa fa-check" />
 
     if (this.props.rule && validator.result) {
-      this.setState({ isInputValid: true, value: value, errorMessage: validator.error });
+      this.setState({
+        isInputValid: true,
+        value: value,
+        errorMessage: validator.error,
+        checkMark: validCheckMark
+      });
       this.props.parentHandler(this.props.name, value, true);
 
 
@@ -176,19 +201,26 @@ class Input extends Component {
 
       if (errResponse.length > 0) {
         this.props.parentHandler(this.props.name, value, false);
+        this.setState({ checkMark: null });
       } else {
         this.props.parentHandler(this.props.name, value, true);
+        this.setState({ checkMark: validCheckMark});
       }
 
 
     } else if (this.props.rule && !validator.result) {
-      this.setState({ isInputValid: false, value: value, errorMessage: validator.error});
+      this.setState({
+        isInputValid: false,
+        value: value,
+        errorMessage: validator.error,
+        checkMark: null
+      });
 
       this.props.parentHandler(this.props.name, value, false);
 
 
     } else { // if there are no rules present then it will always be true
-      this.setState({ isInputValid: true, value: value });
+      this.setState({ isInputValid: true, value: value, checkMark: validCheckMark });
       this.props.parentHandler(this.props.name, value, true);
     }
 
