@@ -8,6 +8,7 @@ class App extends Component {
   render() {
     return (
       <main>
+        <h1>Example 1</h1>
         <Form />
       </main>
     )
@@ -25,6 +26,14 @@ class Form extends Component {
   }
 
   render() {
+    var countryList = [
+      {value: "usa", name: "USA"},
+      {value: "canada", name: "Canada"},
+      {value: "china", name: "China"}
+    ];
+
+    console.log(this.state.inputValues);
+
     return (
       <form onSubmit={this._onSubmitHandler.bind(this)}>
         <Input
@@ -41,6 +50,12 @@ class Form extends Component {
           name="age"
           parentHandler={this._fetchValueFromInput.bind(this)}
           rule={["number", "required"]} />
+
+        <Select
+          options={countryList}
+          label="Country"
+          name="country"
+          parentHandler={this._fetchValueFromInput.bind(this)} />
         <button type="submit" style={{ display: "block" }} disabled={!this.state.isFormValid}>Submit</button>
       </form>
     )
@@ -50,15 +65,6 @@ class Form extends Component {
     e.preventDefault();
     // no op
 
-  }
-
-  componentDidMount() {
-    var validate = this._validateForm(this.state.fieldValidity)
-    if (validate) {
-      this.setState({ isFormValid: true });
-    } else {
-      this.setState({ isFormValid: false });
-    }
   }
 
   _fetchValueFromInput(key, value, isValid) {
@@ -146,19 +152,13 @@ class Input extends Component {
 
     } else if (this.props.rule && Array.isArray(validator)) {
 
-      /**
-       * Validator with multiple rules Rules
-       */
-
       this.setState({ isInputValid: false, value: value});
       var errResponse = []; // mutable array that would collect the err messages
       validator.forEach(response => {
         if (response.error) {
           errResponse.push(response.error)
-          this.setState({ errorMessage: errResponse});
-        } else {
-          this.setState({ errorMessage: errResponse });
         }
+        this.setState({ errorMessage: errResponse});
       }.bind(this))
 
       if (errResponse.length > 0) {
@@ -167,10 +167,12 @@ class Input extends Component {
         this.props.parentHandler(this.props.name, value, true);
       }
 
+
     } else if (this.props.rule && !validator.result) {
       this.setState({ isInputValid: false, value: value, errorMessage: validator.error});
 
       this.props.parentHandler(this.props.name, value, false);
+
 
     } else { // if there are no rules present then it will always be true
       this.setState({ isInputValid: true, value: value });
@@ -180,22 +182,31 @@ class Input extends Component {
   }
 }
 
-class Checkbox extends Input {
+class Select extends Input {
   render() {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
-        <input
+        <select
           name={this.props.name}
-          type="checkbox" />
-          //onChange={this._onChangeHandler.bind(this)}
-          //value={this.state.value} />
+          value={this.state.value}
+          onChange={this._onChangeHandler.bind(this)}>
+
+          <option value={null} disabled={true}>Please Select</option>
+
+          {this.props.options.map((option, index) => {
+            return <option key={index} value={option.value}>{option.name}</option>
+          })}
+
+        </select>
+
         {this._renderErrorMessages()}
+
       </div>
     )
   }
 }
 
-const mountNode = document.getElementById("app")
+const mountNode = document.getElementById("app");
 
-ReactDOM.render(<App />, mountNode)
+ReactDOM.render(<App />, mountNode);
