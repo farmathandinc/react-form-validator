@@ -11,7 +11,8 @@ label {
   display: block;
 }
 
-.input-container input[type=text] {
+.input-container input[type=text],
+.input-container select {
   margin-top: 5px;
   display: inline-block;
 }

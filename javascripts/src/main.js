@@ -232,18 +232,21 @@ class Select extends Input {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>
-        <select
-          name={this.props.name}
-          value={this.state.value}
-          onChange={this._onChangeHandler.bind(this)}>
+        <div className="input-container">
+          <select
+            name={this.props.name}
+            value={this.state.value}
+            onChange={this._onChangeHandler.bind(this)}>
 
-          <option value={null} disabled={true}>Please Select</option>
+            <option value={null} disabled={true}>Please Select</option>
 
-          {this.props.options.map((option, index) => {
-            return <option key={index} value={option.value}>{option.name}</option>
-          })}
+            {this.props.options.map((option, index) => {
+              return <option key={index} value={option.value}>{option.name}</option>
+            })}
 
-        </select>
+          </select>
+          {this.state.checkMark}
+        </div>
 
         {this._renderErrorMessages()}
 
