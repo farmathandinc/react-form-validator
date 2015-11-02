@@ -116,39 +116,34 @@ class Input extends Component {
     var validator = inputsValidator(value, rule)
 
     if (this.props.rule && validator.result) {
-      console.log("this should be triggered");
       this.setState({ isInputValid: true, value: value, errorMessage: validator.error });
       this.props.parentHandler(this.props.name, value, true);
 
+
     } else if (this.props.rule && Array.isArray(validator)) {
+
+      /**
+       * Validator with multiple rules Rules
+       */
+
       this.setState({ isInputValid: false, value: value});
-      console.log("YOYOYO")
       var errResponse = []; // mutable array that would collect the err messages
-      // console.log(validator);
-
       validator.forEach(response => {
-        errResponse.push(response.error)
-        this.setState({ errorMessage: errResponse});
+        if (response.error) {
+          errResponse.push(response.error)
+          this.setState({ errorMessage: errResponse});
+        }
       }.bind(this))
+      //console.log("Error Response from validator", errResponse);
 
-      this.props.parentHandler(this.props.name, value, false);
+      if (errResponse.length > 0) {
+        this.props.parentHandler(this.props.name, value, false);
+      } else {
+        this.props.parentHandler(this.props.name, value, true);
+      }
 
     } else if (this.props.rule && !validator.result) {
       this.setState({ isInputValid: false, value: value, errorMessage: validator.error});
-
-      // if (Array.isArray(validator)) {
-      //
-      //   var errResponse = []; // mutable array that would collect the err messages
-      //   // console.log(validator);
-      //
-      //   validator.forEach(response => {
-      //     errResponse.push(response.error)
-      //     this.setState({ errorMessage: errResponse});
-      //   }.bind(this))
-      //
-      // } else {
-      //   this.setState({ errorMessage: validator.error });
-      // }
 
       this.props.parentHandler(this.props.name, value, false);
 

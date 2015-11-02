@@ -7,7 +7,7 @@ import validator, {
 
 function validationTruthChecker(method, rules) {
   var result = method === false ? false : true;
-  var error = "";
+  var error = null;
 
   if (result === false) {
     switch(rules) {
@@ -50,7 +50,7 @@ function ruleChecker(value, rule) {
 
 export function inputsValidator(value, rules) {
 
-  var defaults = { result: true, error: "" };
+  var defaults = { result: true, error: null };
 
   if (Array.isArray(rules)) {
     return rules.map(rule => {
