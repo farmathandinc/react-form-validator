@@ -296,7 +296,6 @@ class Checkbox extends Component {
     this.setState({ value: value })
     this.props.parentHandler(this.props.name, value, true);
   }
-
 }
 
 
