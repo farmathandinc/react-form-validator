@@ -1,4 +1,4 @@
-import React, {Component} from "react"
+import React, {Component, PropTypes} from "react"
 import ReactDOM, {findDOMNode} from "react-dom"
 import _ from "underscore"
 
@@ -78,6 +78,11 @@ class Form extends Component {
           label="Country*"
           name="country"
           rule="required"
+          parentHandler={this._fetchValueFromInput.bind(this)} />
+
+        <Checkbox
+          name="marital_status"
+          label="Married?"
           parentHandler={this._fetchValueFromInput.bind(this)} />
 
         <button type="submit" style={{ display: "block", marginTop: "20px" }} disabled={!this.state.isFormValid}>Submit</button>
@@ -257,6 +262,41 @@ class Select extends Input {
       </div>
     )
   }
+}
+
+class Checkbox extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: false
+    }
+  }
+  componentDidMount() {
+    this.props.parentHandler(this.props.name, this.state.value, true);
+  }
+  render() {
+    console.log(`${this.props.name} : ${this.state.value}`);
+    return (
+      <div className="input-container">
+        <label>{this.props.label}</label>
+        <div className="input-inner-container">
+          <input
+            name={this.props.name}
+            type="checkbox"
+            onChange={this._onChangeHandler.bind(this)}
+            checked={this.state.value} />
+        </div>
+      </div>
+    )
+  }
+
+  _onChangeHandler(e) {
+    //e.preventDefault();
+    var value = e.target.checked;
+    this.setState({ value: value })
+    this.props.parentHandler(this.props.name, value, true);
+  }
+
 }
 
 
