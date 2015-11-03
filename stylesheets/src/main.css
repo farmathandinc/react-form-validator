@@ -1,3 +1,16 @@
+/*:root {*/
+  /*--mainColor: red;*/
+/*}*/
+
+/*a {*/
+  /*color: var(--mainColor);*/
+/*}*/
+
+:root {
+  --successColor: #29CF71;
+  --dullGrey: #d3d3d3;
+}
+
 body {
   font-size: 14px;
   font-family: helvetica;
@@ -20,7 +33,26 @@ label {
 .input-inner-container .check-mark {
   margin-left: 5px;
   display: inline-block;
-  color: #29CF71;
+  color: var(--successColor);
+}
+
+button[type=submit] {
+  border: none;
+  color: white;
+  background: var(--successColor);
+  border-radius: 3px;
+}
+
+button[type=submit]:hover {
+  cursor: pointer;
+}
+
+button[type=submit]:disabled {
+  background: var(--dullGrey);
+}
+
+button[type=submit]:disabled:hover {
+  cursor: not-allowed;
 }
 
 
