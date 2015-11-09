@@ -16,6 +16,11 @@ body {
   font-family: helvetica;
 }
 
+main {
+  margin: 0 auto;
+  max-width: 650px;
+}
+
 label {
   display: block;
 }
@@ -55,4 +60,14 @@ button[type=submit]:disabled:hover {
   cursor: not-allowed;
 }
 
+.utils-y-padding--small {
+  padding: 20px 0;
+}
 
+.utils-y-padding--medium {
+  padding: 35px 0;
+}
+
+.utils-y-padding--large {
+  padding: 50px 0;
+}
