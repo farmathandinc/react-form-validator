@@ -14,12 +14,18 @@ function errorHandler(method, rules) {
       case "required":
         error = "You cannot leave this blank";
         return {result, error};
+        break;
+
       case "number":
         error = "Number only";
         return {result, error};
+        break;
+
       case "percentage":
         error = "Insert number between 0 and 100";
         return {result, error};
+        break;
+
       default:
         error = null
         return {result, error};
@@ -29,53 +35,35 @@ function errorHandler(method, rules) {
   }
 }
 
+function checker(value, rule) {
+  var defaults = { result: true, error: null };
+  switch(rule) {
+    case "required":
+      return errorHandler(!isNull(value), rule);
+    break;
+
+    case "number":
+      return errorHandler(isNumeric(value), rule);
+    break;
+
+    case "percentage":
+      return errorHandler(isInt(value, { min: 0, max: 100 }), rule);
+    break;
+
+    default:
+      return defaults;
+  }
+}
+
 export function inputsValidator(value, rules) {
 
   var defaults = { result: true, error: null };
 
   if (Array.isArray(rules)) {
     return rules.map(rule => {
-      switch(rule) {
-        case "required":
-          return errorHandler(!isNull(value), rule);
-        break;
-
-        case "number":
-          return errorHandler(isNumeric(value), rule);
-        break;
-
-        case "percentage":
-          return errorHandler(isInt(value, { min: 0, max: 100 }), rule);
-        break;
-
-        default:
-          return defaults;
-      }
+      return checker(value, rule);
     })
   } else if (typeof rules === "string") {
-    switch(rules) {
-      case "required":
-        return errorHandler(!isNull(value), rules)
-      break;
-
-      case "number":
-        if (value === "") {
-          return defaults;
-        } else {
-          return errorHandler(isNumeric(value), rules);
-        }
-      break;
-
-      case "percentage":
-        if (value === "") {
-          return defaults;
-        } else {
-          return errorHandler(isInt(value, { min: 0, max: 100 }), rules)
-        }
-      break;
-
-      default:
-        return defaults
-    }
+    return checker(value, rules);
   }
 }

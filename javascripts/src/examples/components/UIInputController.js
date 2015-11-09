@@ -14,7 +14,7 @@ export default class UIInputController extends Component { // Input State Manage
     }
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.setState({ value: this.props.value ? this.props.value : this.state.value });
 
     if (!this.props.rule) {
@@ -26,11 +26,11 @@ export default class UIInputController extends Component { // Input State Manage
     }
   }
 
-  _onChangeHandler(e) {
+  _onChangeHandler(e): void {
     this._validateInput(e.target.value, this.props.rule)
   }
 
-  _renderErrorMessages() {
+  _renderErrorMessages(): ?ReactElement {
     var errorMessageState = this.state.errorMessage;
 
     if (Array.isArray(errorMessageState)) {
@@ -42,7 +42,7 @@ export default class UIInputController extends Component { // Input State Manage
     }
   }
 
-  _validateInput(value, rule) {
+  _validateInput(value: string, rule: ?string) {
     var validator = inputsValidator(value, rule)
     var validCheckMark = <i className="check-mark fa fa-check" />
 

@@ -9,7 +9,7 @@ import ReactDOM, {findDOMNode} from "react-dom";
 import UIFormController from "./components/UIFormController";
 
 export default class StatelessForm extends UIFormController { // Form State Manage
-  render() {
+  render(): ReactElement {
 
     var formInputs = [
       {label: "Name", name: "name", rule: "required"},

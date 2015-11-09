@@ -4,7 +4,7 @@ import ReactDOM, {findDOMNode} from "react-dom";
 import UIInputController from "./UIInputController";
 
 export default class Input extends UIInputController {
-  render() {
+  render(): ReactElement {
     return (
       <div className="input-container">
         <label>{this.props.label}</label>

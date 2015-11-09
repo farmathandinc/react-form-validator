@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM, {findDOMNode} from "react-dom";
 
-export const SubmitButton = ({ label, disabled }) => (
+export const SubmitButton = ({ label, disabled }): ReactElement => (
   <button disabled={disabled} type="submit">{label}</button>
 )
 

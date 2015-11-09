@@ -14,17 +14,17 @@ export default class UIFormController extends Component {
     }
   }
 
-  _renderSubmitButton() {
+  _renderSubmitButton(): ReactElement {
     return <SubmitButton disabled={!this.state.isFormValid} />
   }
 
-  _onSubmitHandler(e) {
+  _onSubmitHandler(e): void {
     e.preventDefault();
     var results = this._getInputValues(this.refs);
     console.log(results);
   }
 
-  _getInputValues(refs) {
+  _getInputValues(refs: Object): Object {
     var results = {};
     Object.keys(refs).forEach(name => {
       results[name] = findDOMNode(this.refs[name].refs.input).value;
@@ -33,7 +33,7 @@ export default class UIFormController extends Component {
     return results;
   }
 
-  _validateInput(key, isValid) {
+  _validateInput(key: string, isValid: boolean) {
 
     this.state.fieldValidity[key] = isValid
 
@@ -47,7 +47,7 @@ export default class UIFormController extends Component {
     }
   }
 
-  _validateForm(formData) {
+  _validateForm(formData: Object): boolean {
 
     var values = _.values(formData)
 
@@ -58,7 +58,7 @@ export default class UIFormController extends Component {
     }
   }
 
-  _generateForm(inputs, validator) {
+  _generateForm(inputs: Array<Object>, validator: Function): ReactElement {
     return inputs.map((input, index) => {
       return <Input
                 key={index}
