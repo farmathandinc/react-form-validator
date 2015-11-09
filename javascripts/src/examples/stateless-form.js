@@ -3,84 +3,23 @@
  * Pure functions and microcompartmentelization of components
  */
 
-import React, {Component, PropTypes} from "react"
-import ReactDOM, {findDOMNode} from "react-dom"
-import _ from "underscore"
+import React, {Component, PropTypes} from "react";
+import ReactDOM, {findDOMNode} from "react-dom";
+import _ from "underscore";
 
-import {inputsValidator} from "../validator"
+import Input from "./components/Input";
+import UIFormController from "./components/UIFormController";
 
-export default class StatelessForm extends Component {
+import {inputsValidator} from "../validator";
+
+export default class StatelessForm extends UIFormController { // Form State Manage
   render() {
     return (
       <form onSubmit={this._onSubmitHandler.bind(this)}>
-        <InputContainer label="Name" ref="name" />
-        <InputContainer label="Age" ref="age" />
-        <SubmitButton />
+        <Input label="Name" ref="name" rule="required" parentInputValidator={this._validateInput.bind(this)} />
+        <Input label="Age" ref="age" rule="number" parentInputValidator={this._validateInput.bind(this)} />
+        {this._renderSubmitButton()}
       </form>
     )
   }
-
-  _onSubmitHandler(e) {
-    e.preventDefault();
-    var results = this._getInputValues(this.refs);
-    console.log(results);
-  }
-
-  _getInputValues(refs) {
-    var results = {};
-    window.findDOMNode = findDOMNode;
-    Object.keys(refs).forEach(name => {
-      results[name] = findDOMNode(this.refs.name.refs.input).value;
-    }.bind(this))
-
-    return results;
-  }
-}
-
-class InputContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: "" }
-  }
-
-  render() {
-    return (
-      <div className="input-container">
-        <label>{this.props.label}</label>
-        <input ref="input" name={this.props.name} defaultValue={this.props.defaultValue} />
-      </div>
-    )
-  }
-}
-
-// const InputContainer = ({ label, name, defaultValue }) => (
-//   <div className="input-container">
-//     <label>{label}</label>
-//     <input name={name} defaultValue={defaultValue} />
-//   </div>
-// )
-
-InputContainer.propTypes = {
-  label: PropTypes.string,
-  name: PropTypes.string,
-  defaultValue: PropTypes.string
-}
-
-InputContainer.defaultProps = {
-  label: "",
-  name: "",
-  defaultValue: ""
-}
-
-
-const SubmitButton = ({ label }) => (
-  <button type="submit">{label}</button>
-)
-
-SubmitButton.propTypes = {
-  label: PropTypes.string
-}
-
-SubmitButton.defaultProps = {
-  label: "Submit"
 }
