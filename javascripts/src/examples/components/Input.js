@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM, {findDOMNode} from "react-dom";
 
-import InputContainer from "./InputContainer";
+import UIInputController from "./UIInputController";
 
-export default class Input extends InputContainer {
+export default class Input extends UIInputController {
   render() {
     return (
       <div className="input-container">

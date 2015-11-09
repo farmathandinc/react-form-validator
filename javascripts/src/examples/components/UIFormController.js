@@ -3,13 +3,14 @@ import ReactDOM, {findDOMNode} from "react-dom";
 import _ from "underscore";
 
 import {SubmitButton} from "./SubmitButton";
+import Input from "./Input"
 
 export default class UIFormController extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValues: {},
-      isFormValid: false
+      isFormValid: false,
+      fieldValidity: {}
     }
   }
 
@@ -32,17 +33,13 @@ export default class UIFormController extends Component {
     return results;
   }
 
-  _validateInput(isValid) {
+  _validateInput(key, isValid) {
 
-    var fieldValidity = {}
+    this.state.fieldValidity[key] = isValid
 
-    Object.keys(this.refs).forEach(key => {
-      fieldValidity[key] = isValid
-    }.bind(this))
+    console.log(this.state.fieldValidity);
 
-    console.log(fieldValidity);
-
-    var validate = this._validateForm(fieldValidity);
+    var validate = this._validateForm(this.state.fieldValidity);
     if (validate) {
       this.setState({ isFormValid: true });
     } else {
@@ -59,5 +56,17 @@ export default class UIFormController extends Component {
     } else {
       return true;
     }
+  }
+
+  _generateForm(inputs, validator) {
+    return inputs.map((input, index) => {
+      return <Input
+                key={index}
+                name={input.name}
+                ref={input.name}
+                label={input.label}
+                rule={input.rule ? input.rule : ""}
+                parentInputValidator={validator} />
+    })
   }
 }

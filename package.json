@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "faker": "^3.0.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",

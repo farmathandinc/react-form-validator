@@ -16,6 +16,14 @@ export default class UIInputController extends Component { // Input State Manage
 
   componentDidMount() {
     this.setState({ value: this.props.value ? this.props.value : this.state.value });
+
+    if (!this.props.rule) {
+      this.props.parentInputValidator(this.props.name, true);
+    } else if (this.props.rule !== "required") {
+      this.props.parentInputValidator(this.props.name, true);
+    } else {
+      this.props.parentInputValidator(this.props.name, this.state.isInputValid);
+    }
   }
 
   _onChangeHandler(e) {
@@ -45,7 +53,7 @@ export default class UIInputController extends Component { // Input State Manage
         errorMessage: validator.error,
         checkMark: value === "" ? null : validCheckMark
       });
-      this.props.parentInputValidator(true);
+      this.props.parentInputValidator(this.props.name, true);
 
 
     } else if (this.props.rule && Array.isArray(validator)) {
@@ -60,10 +68,10 @@ export default class UIInputController extends Component { // Input State Manage
       }.bind(this))
 
       if (errResponse.length > 0) {
-        this.props.parentInputValidator(false);
+        this.props.parentInputValidator(this.props.name, false);
         this.setState({ checkMark: null });
       } else {
-        this.props.parentInputValidator(true);
+        this.props.parentInputValidator(this.props.name, true);
         this.setState({ checkMark: validCheckMark});
       }
 
@@ -76,7 +84,7 @@ export default class UIInputController extends Component { // Input State Manage
         checkMark: null
       });
 
-      this.props.parentInputValidator(false);
+      this.props.parentInputValidator(this.props.name, false);
 
 
     } else { // if there are no rules present then it will always be true
@@ -85,7 +93,7 @@ export default class UIInputController extends Component { // Input State Manage
         value: value,
         checkMark: value === "" ? null : validCheckMark
       });
-      this.props.parentInputValidator(true);
+      this.props.parentInputValidator(this.props.name, true);
     }
 
   }
