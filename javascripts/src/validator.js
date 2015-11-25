@@ -14,17 +14,14 @@ function errorHandler(method, rules) {
       case "required":
         error = "You cannot leave this blank";
         return {result, error};
-        break;
 
       case "number":
         error = "Number only";
         return {result, error};
-        break;
 
       case "percentage":
         error = "Insert number between 0 and 100";
         return {result, error};
-        break;
 
       default:
         error = null

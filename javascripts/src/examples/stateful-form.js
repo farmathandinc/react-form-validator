@@ -158,7 +158,9 @@ class Input extends Component {
   }
 
   _validateInput(value, rule) {
+    console.log(this.props.rule)
     var validator = inputsValidator(value, rule)
+    console.log(rule);
     var validCheckMark = <i className="check-mark fa fa-check" />
 
     if (this.props.rule && validator.result) {
